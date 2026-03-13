@@ -7,7 +7,7 @@ resource "aws_vpc" "this" {
 
 resource "aws_subnet" "public" {
   cidr_block = var.subnet_cidr_block
-  vpc_id = aws_vpc.this
+  vpc_id = aws_vpc.this.id
   depends_on = [ aws_vpc.this ]
   tags = {
     Name = "${var.vpc_name}-public"
@@ -28,7 +28,7 @@ resource "aws_route_table" "this" {
   depends_on = [ aws_vpc.this, aws_internet_gateway.this ]
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.public.id
+    gateway_id = aws_internet_gateway.this.id
   }
   tags = {
     Name = "${var.vpc_name}-public"

@@ -1,0 +1,70 @@
+name: 'TF Checks'
+
+on:
+  pull_request:
+
+jobs:
+  tf-format-check:
+    name: 'TF Format Check'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.14.6 # Specify your desired Terraform version
+
+    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init
+
+    # Checks that all Terraform configuration files adhere to a canonical format
+    - name: Terraform Format
+      run: terraform fmt -check
+      
+  tf-lint-check:
+    name: 'TF Lint Check'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Checkov GitHub Action
+      uses: bridgecrewio/checkov-action@v12.3064.0
+      with:
+        skip_path: .github
+        output_format: cli,sarif
+        output_file_path: console,results.sarif
+
+    # Enable this step if advanced security is enabled
+    # - name: Upload SARIF file
+    #   uses: github/codeql-action/upload-sarif@v3
+      
+    #   # Results are generated only on a success or failure
+    #   # this is required since GitHub by default won't run the next step
+    #   # when the previous one has failed. Security checks that do not pass will 'fail'.
+    #   # An alternative is to add `continue-on-error: true` to the previous step
+    #   # Or 'soft_fail: true' to checkov.
+    #   if: success() || failure()
+    #   with:
+    #     sarif_file: results.sarif
