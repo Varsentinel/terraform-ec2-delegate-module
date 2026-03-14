@@ -3,27 +3,32 @@ variable "region" {
 }
 
 variable "instance_type" {
-  type = string
+  type    = string
+  default = "r6g.large"
 }
 
 variable "ami_name" {
-  type = string
+  type        = string
   description = "Name of the AMI"
-  default = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-amd64-server-*"
+  default     = "ubuntu/images/hvm-ssd-gp3/ubuntu-noble-24.04-*"
 }
 
 variable "name" {
-  type = string
+  type        = string
   description = "Name of the EC2"
 }
 
+variable "volume_size" {
+  type = number
+}
+
 variable "cidr_block" {
-  type = string
+  type        = string
   description = "VPC Subnet CIDR Block"
 }
 
 variable "subnet_cidr_block" {
-  type = string
+  type        = string
   description = "Public Subnet CIDR Block"
 }
 

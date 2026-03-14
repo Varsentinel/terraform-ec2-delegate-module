@@ -77,17 +77,10 @@ name               = "my-ec2-instance"
 ```
 
 ## Outputs
-
-Currently, this module does not define any outputs. Consider adding outputs for:
 - VPC ID
 - Subnet ID
 - EC2 instance ID
 - EC2 public IP
-
-## Known Issues
-
-- Line 13 in `main.tf`: `aws_vpc.this` should be `aws_vpc.this.id`
-- Line 31 in `main.tf`: `aws_internet_gateway.public.id` should be `aws_internet_gateway.this.id`
 
 ## License
 

@@ -12,12 +12,17 @@ data "aws_ami" "ubuntu" {
   }
 
   filter {
-    name = "root-device-type"
+    name   = "architecture"
+    values = ["arm64"]
+  }
+
+  filter {
+    name   = "root-device-type"
     values = ["ebs"]
   }
 
   filter {
-    name = "owner-alias"
+    name   = "owner-alias"
     values = ["amazon"]
   }
 
