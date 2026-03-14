@@ -2,6 +2,9 @@ name: 'TF Checks'
 
 on:
   pull_request:
+    paths-ignore:
+      - '.github/**'
+      - '*.md'
 
 jobs:
   tf-format-check:

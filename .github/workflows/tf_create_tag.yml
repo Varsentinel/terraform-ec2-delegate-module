@@ -3,7 +3,9 @@ on:
   push:
     branches:
       - main
-
+    paths-ignore:
+      - '.github/**'
+      - '*.md'
 jobs:
   create-tag:
     runs-on: ubuntu-latest
@@ -15,11 +17,18 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for all tags and branches
+
+      - name: Fetch tags from origin
+        run: |
+          git fetch --tags --force
+          echo "Fetched all tags from origin"
 
       - name: Get latest tag
         id: get_tag
         run: |
-          # Get the latest tag, or use v0.0.0 if no tags exist
+          # Get the latest tag from origin, or use v0.0.0 if no tags exist
           LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
           echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
           echo "Latest tag: $LATEST_TAG"
