@@ -93,8 +93,6 @@ resource "aws_instance" "this" {
     http_endpoint = "enabled"
     http_tokens   = "required"
   }
-  tags = {
-    Name = var.name
-  }
+  tags       = var.tags
   depends_on = [aws_security_group.this, aws_iam_instance_profile.this]
 }

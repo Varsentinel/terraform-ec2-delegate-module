@@ -35,3 +35,9 @@ variable "subnet_cidr_block" {
 variable "vpc_name" {
   type = string
 }
+
+variable "tags" {
+  type    = map(string)
+  default = {}
+  # description = "Tags to apply to resources"
+}
